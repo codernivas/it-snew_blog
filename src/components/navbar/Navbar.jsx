@@ -15,11 +15,20 @@ const Navbar = () => {
       </div>
       <div className={styles.logo}>it&lsquo;snew</div>
       <div className={styles.links}>
-      <ThemeToggle/>
-        <Link href={"/"}> Home</Link>
-        <Link href={"/"}> Contact</Link>
-        <Link href={"/"}> About</Link>
-        <AuthLinks/>
+        <ThemeToggle />
+        <Link href={"/"} className={styles.link}>
+          {" "}
+          Home
+        </Link>
+        <Link href={"/"} className={styles.link}>
+          {" "}
+          Contact
+        </Link>
+        <Link href={"/"} className={styles.link}>
+          {" "}
+          About
+        </Link>
+        <AuthLinks />
       </div>
     </div>
   )
