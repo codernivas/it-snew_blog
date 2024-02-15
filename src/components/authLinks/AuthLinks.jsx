@@ -1,25 +1,44 @@
 "use client"
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import styles from "./authLinks.module.css"
 import Link from "next/link"
+import axios from "axios"
 
 const AuthLinks = () => {
   const [open, setOpen] = useState(false)
-  //temporory
-  const status = "authenciated"
+  const [userData, setUserData] = useState({})
+  console.log("Response", userData.email_verified)
+
+  const getUser = async () => {
+    try {
+      const response = await axios.get("http://localhost:6005/login/sucess", {
+        withCredentials: true,
+      })
+      setUserData(response.data.user)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    getUser()
+  }, [])
+
+  const status = userData.email_verified ? "authenticated" : "not authenticated"
+  console.log("status", status)
   return (
     <>
-      {status === "notauthenciated" ? (
-        <Link href={"/login"} className={styles.link}>
-          Login
-        </Link>
-      ) : (
+      {status === "authenticated" ? (
         <>
           <Link href={"/write"} className={styles.link}>
             Write
           </Link>
           <span className={styles.link}>Logout</span>
         </>
+      ) : (
+        <Link href={"/login"} className={styles.link}>
+          Login
+        </Link>
       )}
       <div className={styles.burger} onClick={() => setOpen(!open)}>
         <div className={styles.line}></div>
@@ -31,13 +50,13 @@ const AuthLinks = () => {
           <Link href={"/"}>Home</Link>
           <Link href={"/"}>About</Link>
           <Link href={"/"}>Contact</Link>
-          {status === "notauthenciated" ? (
-            <Link href={"/login"}>Login</Link>
-          ) : (
+          {status === "authenticated" ? (
             <>
               <Link href={"/write"}>Write</Link>
               <span className={styles.link}>Logout</span>
             </>
+          ) : (
+            <Link href={"/login"}>Login</Link>
           )}
         </div>
       )}
